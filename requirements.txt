@@ -8,3 +8,4 @@ torch
 torchvision
 tqdm
 nibabel
+torchio
