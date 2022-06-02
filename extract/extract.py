@@ -58,8 +58,8 @@ def extract_features(
     filenames = Path(images_list).read_text().splitlines()
     dataset = utils.ImagesDataset(filenames=filenames, images_root=images_root, transform=val_transform)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, num_workers=8)
-    print(f'Dataset size: {len(dataset)=}')
-    print(f'Dataloader size: {len(dataloader)=}')
+    print(f'Dataset size: {len(dataset)}')
+    print(f'Dataloader size: {len(dataloader)}')
 
     # Prepare
     accelerator = Accelerator(fp16=True, cpu=False)
