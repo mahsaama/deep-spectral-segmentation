@@ -12,7 +12,7 @@ from skimage.morphology import binary_dilation, binary_erosion
 from torch.utils.data import Dataset
 from torchvision import transforms
 from tqdm import tqdm
-import SimpleITK as sitk
+import nibabel as nib
 
 
 
@@ -29,7 +29,9 @@ class ImagesDataset(Dataset):
         path = self.filenames[index]
         full_path = Path(path) if self.root is None else self.root / path
         assert full_path.is_file(), f'Not a file: {full_path}'
-        image = sitk.ReadImage(str(full_path))
+        image = nib.load(str(full_path)).get_fdata(dtype="float32", caching="unchanged")
+        print(type(image))
+        print(image.shape)
         if self.transform is not None:
             image = self.transform(image)
         return image, path, index

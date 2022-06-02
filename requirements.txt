@@ -7,4 +7,4 @@ scipy
 torch
 torchvision
 tqdm
-SimpleITK
+nibabel
