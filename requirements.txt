@@ -1,6 +1,6 @@
 accelerate
 fire
-opencv-python-headless
+opencv-python-headless==4.1.2.30
 pillow
 scikit-image
 scipy
