@@ -12,6 +12,8 @@ from skimage.morphology import binary_dilation, binary_erosion
 from torch.utils.data import Dataset
 from torchvision import transforms
 from tqdm import tqdm
+import SimpleITK as sitk
+
 
 
 class ImagesDataset(Dataset):
@@ -27,8 +29,7 @@ class ImagesDataset(Dataset):
         path = self.filenames[index]
         full_path = Path(path) if self.root is None else self.root / path
         assert full_path.is_file(), f'Not a file: {full_path}'
-        image = cv2.imread(str(full_path))
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = sitk.ReadImage(str(full_path))
         if self.transform is not None:
             image = self.transform(image)
         return image, path, index
