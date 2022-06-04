@@ -79,6 +79,7 @@ def extract_features(
             continue
 
         # Reshape image
+        images = np.moveaxis(images, -1, 1)
         P = patch_size
         B, C, H, W = images.shape
         H_patch, W_patch = H // P, W // P
