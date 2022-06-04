@@ -45,12 +45,12 @@ def get_model(name: str):
         model = torch.hub.load('facebookresearch/pytorchvideo', 'slow_r50', pretrained=True)
         model.fc = torch.nn.Identity()
         val_transform = get_transform(name)
-        patch_size = model.patch_embed.patch_size
+        # patch_size = model.patch_embed.patch_size
         num_heads = model.blocks[0].attn.num_heads
     else:
         raise ValueError(f'Cannot get model: {name}')
     model = model.eval()
-    return model, val_transform, patch_size, num_heads
+    return model, val_transform, num_heads
 
 
 def get_transform(name: str):
