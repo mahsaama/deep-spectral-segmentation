@@ -138,7 +138,7 @@ def _extract_eig(
     image_id = data_dict['file'][:-4]
     
     # Load
-    output_file = str(Path(output_dir) / f'{image_id}.pth')
+    output_file = str(Path(output_dir) / f'{image_id.split("/")[-1]}')
     if Path(output_file).is_file():
         print(f'Skipping existing file {str(output_file)}')
         return  # skip because already generated
