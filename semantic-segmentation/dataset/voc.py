@@ -123,7 +123,7 @@ class VOCSegmentationWithPseudolabelsBase(VisionDataset):
             if all_img_stems[i] in valid_img_stems:
                 segment_files.append(all_segment_files[i])
         self.segments = segment_files
-        assert len(self.segments) == len(self.images), f'{len(self.segments)=} and {len(self.images)=}'
+        assert len(self.segments) == len(self.images), f'{len(self.segments)} and {len(self.images)}'
         print('Loaded segments and images')
         print(f'First image filepath: {self.images[0]}')
         print(f'First segmap filepath: {self.segments[0]}')
