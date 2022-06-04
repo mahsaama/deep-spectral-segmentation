@@ -30,7 +30,8 @@ class ImagesDataset(Dataset):
         path = self.filenames[index]
         full_path = Path(path) if self.root is None else self.root / path
         assert full_path.is_file(), f'Not a file: {full_path}'
-        image = nib.load(str(full_path)).get_fdata(dtype="float32", caching="unchanged")
+        image = np.empty(1, 155, 240, 240)
+        image[0, :, :, :] = nib.load(str(full_path)).get_fdata(dtype="float32", caching="unchanged")
         if self.transform is not None:
             image = self.transform(image)
         return image, path, index
