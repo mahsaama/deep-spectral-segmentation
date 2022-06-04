@@ -531,8 +531,8 @@ def extract_bbox_features(
         image_id = bbox_dict['id']
         bboxes = bbox_dict['bboxes_original_resolution']
         # Load image as tensor
-        print(image_id)
-        print(images_root)
+        print("***1***", image_id)
+        print("***2***", images_root)
         images_root += "_".join(image_id.split("_")[:-1])
         image_filename = str(Path(images_root) / f'{image_id}.gz')
         image = nib.load(image_filename).get_fdata(dtype="float32", caching="unchanged")
