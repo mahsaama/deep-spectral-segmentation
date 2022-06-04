@@ -30,8 +30,8 @@ class ImagesDataset(Dataset):
         path = self.filenames[index]
         full_path = Path(path) if self.root is None else self.root / path
         assert full_path.is_file(), f'Not a file: {full_path}'
-        image = np.empty((1, 240, 240, 155))
-        image[0, :, :, :] = nib.load(str(full_path)).get_fdata(dtype="float32", caching="unchanged")
+        # image = np.empty((1, 240, 240, 155))
+        image = nib.load(str(full_path)).get_fdata(dtype="float32", caching="unchanged")
         if self.transform is not None:
             image = self.transform(image)
         return image, path, index
@@ -56,7 +56,7 @@ def get_model(name: str):
 def get_transform(name: str):
     if any(x in name for x in ('dino', 'mocov3', 'convnext', )):
         # normalize = transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
-        normalize = tio.ZNormalization()
+        # normalize = tio.ZNormalization()
         transform = transforms.Compose([transforms.ToTensor(), normalize])
     else:
         raise NotImplementedError()
