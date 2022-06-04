@@ -9,3 +9,4 @@ torchvision
 tqdm
 nibabel
 torchio
+fvcore
