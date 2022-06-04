@@ -346,7 +346,7 @@ def set_seed(seed):
 
 
 def tensor_to_pil(image: torch.Tensor):
-    assert len(image.shape) and image.shape[0] == 3, f"{image.shape=}"
+    assert len(image.shape) and image.shape[0] == 3, f"{image.shape}"
     image = (image.float() * 0.5 + 0.5).clamp(0, 1).detach().cpu().requires_grad_(False)
     ndarr = image.mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to('cpu', torch.uint8).numpy()
     return Image.fromarray(ndarr)
