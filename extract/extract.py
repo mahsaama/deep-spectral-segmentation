@@ -86,7 +86,7 @@ def extract_features(
         H_pad, W_pad = H_patch * P, W_patch * P
         T = H_patch * W_patch + 1  # number of tokens, add 1 for [CLS]
         # images = F.interpolate(images, size=(H_pad, W_pad), mode='bilinear')  # resize image
-        images = images[:, 70:73, :H_pad, :W_pad]
+        images = images[:, :, :H_pad, :W_pad]
         images = images.to(accelerator.device)
 
         # Forward and collect features into output dict

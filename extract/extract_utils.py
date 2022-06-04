@@ -32,6 +32,7 @@ class ImagesDataset(Dataset):
         assert full_path.is_file(), f'Not a file: {full_path}'
         # image = np.empty((1, 240, 240, 155))
         image = nib.load(str(full_path)).get_fdata(dtype="float32", caching="unchanged")
+        image = image[:, :, 70:73]
         if self.transform is not None:
             image = self.transform(image)
         return image, path, index
