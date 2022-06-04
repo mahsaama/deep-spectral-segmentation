@@ -42,7 +42,7 @@ class ImagesDataset(Dataset):
 
 def get_model(name: str):
     if 'dino' in name:
-        model = torch.hub.load('facebookresearch/dino:main', name)
+        model = torch.hub.load('facebookresearch/pytorchvideo', 'slow_r50', pretrained=True)
         model.fc = torch.nn.Identity()
         val_transform = get_transform(name)
         patch_size = model.patch_embed.patch_size
