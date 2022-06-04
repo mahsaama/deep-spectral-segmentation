@@ -16,6 +16,7 @@ from torchvision.utils import draw_bounding_boxes
 from tqdm import tqdm
 
 import extract_utils as utils
+import nibabel as nib
 
 
 def extract_features(
@@ -530,8 +531,10 @@ def extract_bbox_features(
         image_id = bbox_dict['id']
         bboxes = bbox_dict['bboxes_original_resolution']
         # Load image as tensor
-        image_filename = str(Path(images_root) / f'{image_id}.jpg')
-        image = val_transform(Image.open(image_filename).convert('RGB'))  # (3, H, W)
+        image_filename = str(Path(images_root) / f'{image_id}.gz')
+        image = nib.load(image_filename).get_fdata(dtype="float32", caching="unchanged")
+        image = image[:, :, 70:73]
+        image = val_transform(image)  # (3, H, W)
         image = image.unsqueeze(0).to('cuda')  # (1, 3, H, W)
         features_crops = []
         for (xmin, ymin, xmax, ymax) in bboxes:
