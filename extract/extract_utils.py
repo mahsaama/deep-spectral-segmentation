@@ -42,22 +42,22 @@ class ImagesDataset(Dataset):
 
 def get_model(name: str):
     if 'dino' in name:
-        model = torch.hub.load('facebookresearch/pytorchvideo', 'slow_r50', pretrained=True)
+        model = torch.hub.load('facebookresearch/dino:main', name)
         model.fc = torch.nn.Identity()
         val_transform = get_transform(name)
-        # patch_size = model.patch_embed.patch_size
+        patch_size = model.patch_embed.patch_size
         num_heads = model.blocks[0].attn.num_heads
     else:
         raise ValueError(f'Cannot get model: {name}')
     model = model.eval()
-    return model, val_transform, num_heads
+    return model, val_transform, patch_size, num_heads
 
 
 def get_transform(name: str):
     if any(x in name for x in ('dino', 'mocov3', 'convnext', )):
-        # normalize = transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+        normalize = transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
         # normalize = tio.ZNormalization()
-        transform = transforms.Compose([transforms.ToTensor()])
+        transform = transforms.Compose([transforms.ToTensor(), normalize])
     else:
         raise NotImplementedError()
     return transform

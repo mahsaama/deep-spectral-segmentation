@@ -43,7 +43,7 @@ def extract_features(
 
     # Models
     model_name = model_name.lower()
-    model, val_transform, num_heads = utils.get_model(model_name)
+    model, val_transform, patch_size, num_heads = utils.get_model(model_name)
 
     # Add hook
     if 'dino' in model_name or 'mocov3' in model_name:
@@ -80,15 +80,13 @@ def extract_features(
 
         # Reshape image
         # images = np.moveaxis(images, -1, 1)
-        # P = patch_size
-        P = 1
+        P = patch_size
         B, C, H, W = images.shape
-        print(images.shape)
         H_patch, W_patch = H // P, W // P
         H_pad, W_pad = H_patch * P, W_patch * P
         T = H_patch * W_patch + 1  # number of tokens, add 1 for [CLS]
         # images = F.interpolate(images, size=(H_pad, W_pad), mode='bilinear')  # resize image
-        images = images[:, :, :H_pad, :W_pad]
+        images = images[:, 70:73, :H_pad, :W_pad]
         images = images.to(accelerator.device)
 
         # Forward and collect features into output dict
