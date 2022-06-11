@@ -32,9 +32,9 @@ class ImagesDataset(Dataset):
         image = nib.load(str(full_path)).get_fdata(dtype="float32", caching="unchanged")
         for i in range(52):
             if i == 51:
-                imgs[i, :, :, :] = image[:, :, 152:154]
+                imgs[i, :, :, :] = image[:, :, 152:]
             else:
-                imgs[i, :, :, :] = image[:, :, (3*i):(3*i)+2]
+                imgs[i, :, :, :] = image[:, :, (3*i):(3*i)+3]
             
             if self.transform is not None:
                 imgs[i, :, :, :] = self.transform(imgs[i])
