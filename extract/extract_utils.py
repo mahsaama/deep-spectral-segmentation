@@ -28,16 +28,16 @@ class ImagesDataset(Dataset):
         path = self.filenames[index]
         full_path = Path(path) if self.root is None else self.root / path
         assert full_path.is_file(), f'Not a file: {full_path}'
-        imgs = np.empty((52, 240, 240, 155))
+        imgs = np.empty((52, 240, 240, 3))
         image = nib.load(str(full_path)).get_fdata(dtype="float32", caching="unchanged")
         for i in range(52):
             if i == 51:
-                imgs[i] = image[:, :, 152:154]
+                imgs[i, :, :, :] = image[:, :, 152:154]
             else:
-                imgs[i] = image[:, :, (3*i):(3*i)+2]
+                imgs[i, :, :, :] = image[:, :, (3*i):(3*i)+2]
             
             if self.transform is not None:
-                imgs[i] = self.transform(imgs[i])
+                imgs[i, :, :, :] = self.transform(imgs[i])
         return imgs, path, index
 
     def __len__(self) -> int:
