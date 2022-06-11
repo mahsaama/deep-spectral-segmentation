@@ -81,20 +81,26 @@ def extract_features(
 
         # Reshape image
         # images = np.moveaxis(images, -1, 1)
+        imgs = np.empty((batch_size*52, 3, 240 , 240))
+        k = 0
+        for i in range(batch_size):
+            for j in range(52):
+                imgs[k, :, :, :] = images[i, j, :, :, :]
+                k += 1
+                
         P = patch_size
-        print(images.shape)
-        B, C, H, W = images.shape
+        B, C, H, W = imgs.shape
         H_patch, W_patch = H // P, W // P
         H_pad, W_pad = H_patch * P, W_patch * P
         T = H_patch * W_patch + 1  # number of tokens, add 1 for [CLS]
         # images = F.interpolate(images, size=(H_pad, W_pad), mode='bilinear')  # resize image
-        images = images[:, :, :H_pad, :W_pad]
-        images = images.to(accelerator.device)
+        imgs = imgs[:, :, :H_pad, :W_pad]
+        imgs = imgs.to(accelerator.device)
 
         # Forward and collect features into output dict
         if 'dino' in model_name or 'mocov3' in model_name:
             # accelerator.unwrap_model(model).get_intermediate_layers(images)[0].squeeze(0)
-            model.get_intermediate_layers(images)[0].squeeze(0)
+            model.get_intermediate_layers(imgs)[0].squeeze(0)
             # output_dict['out'] = out
             output_qkv = feat_out["qkv"].reshape(B, T, 3, num_heads, -1 // num_heads).permute(2, 0, 3, 1, 4)
             # output_dict['q'] = output_qkv[0].transpose(1, 2).reshape(B, T, -1)[:, 1:, :]
