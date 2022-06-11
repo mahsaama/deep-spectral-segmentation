@@ -13,8 +13,6 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from tqdm import tqdm
 import nibabel as nib
-import torchio as tio
-
 
 
 class ImagesDataset(Dataset):
@@ -30,15 +28,20 @@ class ImagesDataset(Dataset):
         path = self.filenames[index]
         full_path = Path(path) if self.root is None else self.root / path
         assert full_path.is_file(), f'Not a file: {full_path}'
-        # image = np.empty((1, 240, 240, 155))
+        imgs = np.empty((52, 240, 240, 155))
         image = nib.load(str(full_path)).get_fdata(dtype="float32", caching="unchanged")
-        image = image[:, :, 70:73]
-        if self.transform is not None:
-            image = self.transform(image)
-        return image, path, index
+        for i in range(52):
+            if i == 51:
+                imgs[i] = image[:, :, 152:154]
+            else:
+                imgs[i] = image[:, :, (3*i):(3*i)+2]
+            
+            if self.transform is not None:
+                imgs[i] = self.transform(imgs[i])
+        return imgs, path, index
 
     def __len__(self) -> int:
-        return len(self.filenames)
+        return len(self.filenames) * 52
 
 
 def get_model(name: str):
@@ -57,7 +60,6 @@ def get_model(name: str):
 def get_transform(name: str):
     if any(x in name for x in ('dino', 'mocov3', 'convnext', )):
         normalize = transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
-        # normalize = tio.ZNormalization()
         transform = transforms.Compose([transforms.ToTensor(), normalize])
     else:
         raise NotImplementedError()
