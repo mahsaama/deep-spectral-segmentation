@@ -83,7 +83,7 @@ def get_inverse_transform(name: str):
 def get_image_sizes(data_dict: dict, downsample_factor: Optional[int] = None):
     P = data_dict['patch_size'] if downsample_factor is None else downsample_factor
     B, C, H, W = data_dict['shape']
-    # assert B == 1, 'assumption violated :('
+    assert B == 1, 'assumption violated :('
     H_patch, W_patch = H // P, W // P
     H_pad, W_pad = H_patch * P, W_patch * P
     return (B, C, H, W, P, H_patch, W_patch, H_pad, W_pad)
