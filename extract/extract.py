@@ -174,7 +174,6 @@ def _extract_eig(
 
     # Eigenvectors of affinity matrix with scipy
     elif which_matrix == 'affinity':
-        print(feats.shape)
         W = (feats @ feats.T)
         if threshold_at_zero:
             W = (W * (W > 0))
@@ -199,6 +198,7 @@ def _extract_eig(
             ).reshape(-1, H_pad_lr * W_pad_lr).T
 
         ### Feature affinities 
+        print(feats.shape)
         W_feat = (feats @ feats.T)
         if threshold_at_zero:
             W_feat = (W_feat * (W_feat > 0))
