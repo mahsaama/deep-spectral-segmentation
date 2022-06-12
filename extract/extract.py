@@ -98,7 +98,7 @@ def extract_features(
         T = H_patch * W_patch + 1  # number of tokens, add 1 for [CLS]
         # images = F.interpolate(images, size=(H_pad, W_pad), mode='bilinear')  # resize image
         imgs = imgs[:, :, :H_pad, :W_pad]
-        imgs = imgs.to(accelerator.device)
+        imgs = imgs.to(accelerator.device, dtype=torch.float)
 
         # Forward and collect features into output dict
         if 'dino' in model_name or 'mocov3' in model_name:
