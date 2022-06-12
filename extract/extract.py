@@ -88,8 +88,9 @@ def extract_features(
                 imgs[k, :, :, :] = images[i, j, :, :, :]
                 k += 1
         
-        print(type(images))
-        print(type(imgs))        
+        # print(type(images))
+        # print(type(imgs))  
+        imgs = torch.from_numpy(imgs)      
         P = patch_size
         B, C, H, W = imgs.shape
         H_patch, W_patch = H // P, W // P
