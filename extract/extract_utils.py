@@ -44,7 +44,7 @@ class ImagesDataset(Dataset):
         return transformed_imgs, path, index
 
     def __len__(self) -> int:
-        return len(self.filenames) * 52
+        return len(self.filenames)
 
 
 def get_model(name: str):
