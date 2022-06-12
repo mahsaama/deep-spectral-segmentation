@@ -87,7 +87,9 @@ def extract_features(
             for j in range(52):
                 imgs[k, :, :, :] = images[i, j, :, :, :]
                 k += 1
-                
+        
+        print(type(images))
+        print(type(imgs))        
         P = patch_size
         B, C, H, W = imgs.shape
         H_patch, W_patch = H // P, W // P
