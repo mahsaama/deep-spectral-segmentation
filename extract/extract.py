@@ -199,6 +199,7 @@ def _extract_eig(
 
         ### Feature affinities 
         print(feats.shape)
+        print(feats.T.shape)
         W_feat = (feats @ feats.T)
         if threshold_at_zero:
             W_feat = (W_feat * (W_feat > 0))
